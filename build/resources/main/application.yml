@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:10720/demo
+    username: "hazerdev"
+    password: "h7a0$0d1"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#    server:
+#      port: 9090
+server:
+  shutdown: graceful
+  port: 10600
+  forward-headers-strategy: framework
