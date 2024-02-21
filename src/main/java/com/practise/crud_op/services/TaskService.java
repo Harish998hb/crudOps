@@ -3,6 +3,10 @@ package com.practise.crud_op.services;
 import com.practise.crud_op.data_component.TaskComponent;
 import com.practise.crud_op.repositries.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,9 +63,24 @@ public class TaskService {
                 updatedTask.setIsCompleted(false);
                 taskRepository.save(updatedTask);
                 return true;
-            }else{
+            } else {
                 return false;
             }
+        } catch (RuntimeException err) {
+            throw new RuntimeException(err);
+        }
+    }
+
+    public Page<TaskComponent> getTasksByPagination(Integer pgNo, Integer records, String sortProperty) {
+        try {
+            Pageable pageable = null;
+            if (sortProperty != null && !sortProperty.isEmpty()) {
+                pageable = PageRequest.of(pgNo, records, Sort.Direction.ASC, sortProperty);
+            } else {
+//                sortProperty="taskName";
+                pageable = PageRequest.of(pgNo, records, Sort.Direction.ASC, "taskName");
+            }
+            return taskRepository.findAll(pageable);
         } catch (RuntimeException err) {
             throw new RuntimeException(err);
         }

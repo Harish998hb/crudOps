@@ -3,6 +3,7 @@ package com.practise.crud_op.controllers;
 import com.practise.crud_op.data_component.TaskComponent;
 import com.practise.crud_op.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,15 @@ public class TaskController {
             }
         } catch (Exception err) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{pgNo}/{records}")
+    public Page<TaskComponent> getTasksByPagination(@PathVariable Integer pgNo, @PathVariable Integer records,@RequestParam String sortProperty) {
+        try {
+            return taskService.getTasksByPagination(pgNo, records,sortProperty);
+        } catch (RuntimeException err) {
+            throw new RuntimeException(err);
         }
     }
 
